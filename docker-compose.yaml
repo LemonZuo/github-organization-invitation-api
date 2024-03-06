@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  github-organization-invitation-api:
+    container_name: github-organization-invitation-api
+    build: .
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - '15000:15000'
