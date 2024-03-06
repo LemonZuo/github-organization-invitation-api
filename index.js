@@ -29,7 +29,7 @@ const inviteUserToOrg = async (org, token, invitee) => {
 
     try {
         const response = await axios.post(`https://api.github.com/orgs/${org}/invitations`, data, {headers});
-        console.log("邀请响应数据:", response)
+        console.log("邀请响应数据:", response.data)
         return {success: true, data: response.data};
     } catch (error) {
         console.error(`Error inviting user to ${org}:`, error.response.data);
@@ -40,7 +40,7 @@ const inviteUserToOrg = async (org, token, invitee) => {
 const getGitHubUserId = async (username, headers) => {
     try {
         const response = await axios.get(`https://api.github.com/users/${username}`, {headers});
-        console.log("获取用户ID响应数据:", response)
+        console.log("获取用户ID响应数据:", response.data)
         return response.data.id;
     } catch (error) {
         console.error('Error fetching GitHub user ID:', error.message);
@@ -50,6 +50,7 @@ const getGitHubUserId = async (username, headers) => {
 
 app.get('/inviteUser', async (req, res) => {
     const {invitees} = req.query;
+    console.log("invitees:", invitees);
     if (!invitees) {
         return res.json({code: -1, message: '被邀请人邮箱或用户名不可为空'});
     }
