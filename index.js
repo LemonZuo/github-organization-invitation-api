@@ -49,8 +49,9 @@ const getGitHubUserId = async (username, headers) => {
 };
 
 app.get('/inviteUser', async (req, res) => {
+    console.log("============================ 处理邀请 ============================")
     const {invitees} = req.query;
-    console.log("invitees:", invitees);
+    console.log(`============================ 被邀请人信息：${invitees} ============================`)
     if (!invitees) {
         return res.json({code: -1, message: '被邀请人邮箱或用户名不可为空'});
     }
@@ -58,11 +59,13 @@ app.get('/inviteUser', async (req, res) => {
     for (const {org, token} of orgAndTokens) {
         const result = await inviteUserToOrg(org, token, invitees);
         if (result.success) {
+            console.log(`============================ 成功邀请 ${invitees}加入${org} ============================`)
             return res.json({code: 0, message: '申请成功, 请手动接受邀请', url: `https://github.com/${org}`});
         }
     }
 
     res.json({code: -1, message: '邀请失败，请检查邀请限制或用户是否已在组织中'});
+    console.log(`============================ 邀请失败 ============================`)
 });
 
 app.listen(port, () => {
